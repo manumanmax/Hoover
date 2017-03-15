@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dydu.hoover.model.Area;
+import com.dydu.hoover.model.MatrixPosition;
 import com.dydu.hoover.utils.MatrixFileReader;
 
 public class AreaTest {
@@ -27,7 +28,8 @@ public class AreaTest {
 
 	@Test
 	public void testCornerGivesTwoPos() {
-		assertThat(area.availablePositions().size(), is(2));
+		assertThat(area.availablePositions(new MatrixPosition(2, 2)).size(), is(2));
+
 	}
 
 }
