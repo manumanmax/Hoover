@@ -4,21 +4,17 @@ public enum Direction {
 	UP, DOWN, LEFT, RIGHT;
 
 	public MatrixPosition from(MatrixPosition position) {
-		MatrixPosition direction = position;
 		switch (this) {
 		case UP:
-			direction.line -= 1;
-			break;
+			return new MatrixPosition(position.line - 1, position.column);
 		case DOWN:
-			direction.line += 1;
-			break;
+			return new MatrixPosition(position.line + 1, position.column);
 		case RIGHT:
-			direction.column += 1;
-			break;
+			return new MatrixPosition(position.line, position.column + 1);
 		case LEFT:
-			direction.column -= 1;
+			return new MatrixPosition(position.line, position.column - 1);
 		default:
+			return position;
 		}
-		return direction;
 	}
 }

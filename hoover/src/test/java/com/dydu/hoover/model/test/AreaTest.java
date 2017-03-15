@@ -27,9 +27,11 @@ public class AreaTest {
 	}
 
 	@Test
-	public void testCornerGivesTwoPos() {
+	public void cornersLimitTests() {
 		assertThat(area.availablePositions(new MatrixPosition(2, 2)).size(), is(2));
-
+		assertThat(area.availablePositions(new MatrixPosition(5, 2)).size(), is(2));
+		assertThat(area.availablePositions(new MatrixPosition(5, 19)).size(), is(2));
+		assertThat(area.availablePositions(new MatrixPosition(2, 19)).size(), is(2));
 	}
 
 }

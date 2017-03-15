@@ -1,6 +1,7 @@
 package com.dydu.hoover.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class Area {
@@ -11,17 +12,19 @@ public class Area {
 	}
 
 	public Collection<MatrixPosition> availablePositions(MatrixPosition position) {
-
 		Collection<MatrixPosition> availablePositions = new ArrayList<MatrixPosition>();
-		for (Direction direction : Direction.values())
-			if (isFree(direction.from(position)))
-				availablePositions.add(direction.from(position));
+		for (Direction direction : Direction.values()) {
+			MatrixPosition directionCoordonates = direction.from(position);
+			if (isFree(directionCoordonates))
+				availablePositions.add(directionCoordonates);
+		}
 		return availablePositions;
 	}
 
 	private boolean isFree(MatrixPosition position) {
+
 		if (isInsideMatrix(position)) {
-			if (matrix[position.line][position.column].equals(" ")) {
+			if (matrix[position.getLine()][position.getColumn()].equals(" ")) {
 				return true;
 			}
 		}
@@ -29,10 +32,21 @@ public class Area {
 	}
 
 	private boolean isInsideMatrix(MatrixPosition position) {
-		if (position.line > 0 && position.column > 0 && position.line < matrix.length
-				&& position.column < matrix[0].length) {
+		if (position.getLine() > 0 && position.getColumn() > 0 && position.getLine() < matrix.length
+				&& position.getColumn() < matrix[0].length) {
 			return true;
 		}
 		return false;
 	}
+
+	public void setValueAt(MatrixPosition position, String value) {
+		matrix[position.getLine()][position.getColumn()] = value;
+	}
+
+	public void print() {
+		for (String[] line : matrix) {
+			System.err.println(Arrays.toString(line) + "\n");
+		}
+	}
+
 }
