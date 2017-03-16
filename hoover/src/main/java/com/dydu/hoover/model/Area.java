@@ -43,6 +43,18 @@ public class Area {
 		matrix[position.getLine()][position.getColumn()] = value;
 	}
 
+	public int freePositions() {
+		int freePos = 0;
+		for (String[] line : matrix) {
+			for (String cell : line) {
+				if (cell.equals(" ")) {
+					freePos++;
+				}
+			}
+		}
+		return freePos;
+	}
+
 	public void print() {
 		for (String[] line : matrix) {
 			System.err.println(Arrays.toString(line) + "\n");
