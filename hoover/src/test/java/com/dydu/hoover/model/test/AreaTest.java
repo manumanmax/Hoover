@@ -34,4 +34,23 @@ public class AreaTest {
 		assertThat(area.availablePositions(new MatrixPosition(2, 19)).size(), is(2));
 	}
 
+	/**
+	 * This test fails if the last character of the last line in not a carriage
+	 * return. Simply because the method will count the '\r' at the end of each
+	 * line and set ' ' to fill the last one.
+	 */
+	@Test
+	public void outsideLimitTest() {
+		assertThat(area.availablePositions(new MatrixPosition(0, 0)).size(), is(0));
+		assertThat(area.availablePositions(new MatrixPosition(7, 0)).size(), is(0));
+		assertThat(area.availablePositions(new MatrixPosition(7, 21)).size(), is(0));
+		assertThat(area.availablePositions(new MatrixPosition(0, 21)).size(), is(0));
+	}
+
+	@Test
+	public void randomSituationTest() {
+		assertThat(area.availablePositions(new MatrixPosition(4, 13)).size(), is(0));
+		assertThat(area.availablePositions(new MatrixPosition(3, 8)).size(), is(4));
+		assertThat(area.availablePositions(new MatrixPosition(4, 5)).size(), is(1));
+	}
 }
