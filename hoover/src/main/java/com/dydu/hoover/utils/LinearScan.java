@@ -1,15 +1,16 @@
-package com.dydu.hoover.tools;
+package com.dydu.hoover.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
+import com.dydu.hoover.model.Direction;
 import com.dydu.hoover.model.MatrixPosition;
-import com.dydu.hoover.utils.ICleanStrategy;
 
-public class LinearScan implements ICleanStrategy {
-	private Collection<MatrixPosition> previousPositions = new ArrayList<MatrixPosition>();
+public class LinearScan extends AbstractCleaningStrategy {
+	private Direction currentScanDirection;
 
-	public MatrixPosition getNextPosition(MatrixPosition currentPosition) {
+	@Override
+	public MatrixPosition getNextPosition(Collection<MatrixPosition> availablePositions) {
+
 		return null;
 	}
 
