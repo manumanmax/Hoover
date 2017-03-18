@@ -53,4 +53,9 @@ public class AreaTest {
 		assertThat(area.availablePositions(new MatrixPosition(3, 8)).size(), is(4));
 		assertThat(area.availablePositions(new MatrixPosition(4, 5)).size(), is(1));
 	}
+
+	@Test
+	public void numberOfFreeSpaceInRoomsTest() {
+		assertThat(area.freePositions(), is(65));
+	}
 }
