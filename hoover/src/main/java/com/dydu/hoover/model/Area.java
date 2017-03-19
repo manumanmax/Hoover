@@ -3,6 +3,7 @@ package com.dydu.hoover.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Area {
@@ -41,6 +42,9 @@ public class Area {
 	}
 
 	public Collection<Direction> availableDirections() {
+		if (matrix[hooverPosition.line][hooverPosition.column].equals("M")) {
+			return Collections.emptyList();
+		}
 		Collection<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
 			MatrixPosition directionCoordonates = direction.from(hooverPosition);
@@ -98,7 +102,7 @@ public class Area {
 
 	}
 
-	public void print(String sentence, List<Direction> route) {
+	public void print(String sentence) {
 		List<String[]> tmpMatrix = new ArrayList<String[]>();
 		for (String[] line : matrix) {
 			int pos = line.length - 1;
@@ -130,6 +134,25 @@ public class Area {
 		}
 		return false;
 
+	}
+
+	public int positionToClean() {
+		int foundPlaces = 0;
+		Collection<Direction> directions = new ArrayList<Direction>();
+		Collection<MatrixPosition> positions = new ArrayList<MatrixPosition>();
+		directions = availableDirections();
+		for (Direction d : directions) {
+			positions.add(d.from(hooverPosition));
+		}
+		for (MatrixPosition p : positions) {
+			setValueAt(p, "s");
+		}
+
+		for (MatrixPosition p : positions) {
+
+		}
+
+		return foundPlaces;
 	}
 
 }

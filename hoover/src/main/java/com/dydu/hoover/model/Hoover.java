@@ -25,7 +25,7 @@ public class Hoover {
 
 	public void scanArea(Area area) {
 		while (area.doNeedToBeClean()) {
-			area.print("Before move", route);
+			area.print("Before move");
 			Collection<Direction> availableDirections = area.availableDirections();
 			Direction nextDirection = strategy.getNextDirection(availableDirections);
 			if (nextDirection == Direction.UNDEFINED) {
