@@ -20,17 +20,21 @@ public class Hoover {
 	}
 
 	public void scanArea(Area area) {
-		while (isTherePlacesToClean()) {
+		/*
+		 * while (isTherePlacesToClean()) { Collection<Direction>
+		 * availableDirections = area.availableDirections(position); if
+		 * (!availableDirections.isEmpty()) {
+		 * move(strategy.getNextDirection(availableDirections)); } else { if
+		 * (lastPlaceWithAvailablePosition != null) {
+		 * goBackTo(lastPlaceWithAvailablePosition); } }
+		 * strategy.getNextDirection(availableDirections); }
+		 */
+		area.print("Before move");
+		if (isTherePlacesToClean()) {
 			Collection<Direction> availableDirections = area.availableDirections(position);
-			if (!availableDirections.isEmpty()) {
-				move(strategy.getNextDirection(availableDirections));
-			} else {
-				if (lastPlaceWithAvailablePosition != null) {
-					goBackTo(lastPlaceWithAvailablePosition);
-				}
-			}
-			strategy.getNextDirection(availableDirections);
+			position = strategy.getNextDirection(availableDirections).from(position);
 		}
+		area.print("After move");
 	}
 
 	private void move(Direction direction) {

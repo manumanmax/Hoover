@@ -55,7 +55,8 @@ public class Area {
 		return freePos;
 	}
 
-	public void print() {
+	public void print(String sentence) {
+
 		for (String[] line : matrix) {
 			System.err.println(Arrays.toString(line) + "\n");
 		}
