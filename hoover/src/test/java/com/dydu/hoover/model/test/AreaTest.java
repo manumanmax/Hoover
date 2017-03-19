@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dydu.hoover.model.Area;
+import com.dydu.hoover.model.Direction;
 import com.dydu.hoover.model.MatrixPosition;
 import com.dydu.hoover.utils.MatrixFileReader;
 
@@ -28,10 +29,10 @@ public class AreaTest {
 
 	@Test
 	public void cornersLimitTests() {
-		assertThat(area.availablePositions(new MatrixPosition(2, 2)).size(), is(2));
-		assertThat(area.availablePositions(new MatrixPosition(5, 2)).size(), is(2));
-		assertThat(area.availablePositions(new MatrixPosition(5, 19)).size(), is(2));
-		assertThat(area.availablePositions(new MatrixPosition(2, 19)).size(), is(2));
+		assertThat(area.availableDirections(new MatrixPosition(2, 2)).size(), is(2));
+		assertThat(area.availableDirections(new MatrixPosition(5, 2)).size(), is(2));
+		assertThat(area.availableDirections(new MatrixPosition(5, 19)).size(), is(2));
+		assertThat(area.availableDirections(new MatrixPosition(2, 19)).size(), is(2));
 	}
 
 	/**
@@ -41,17 +42,22 @@ public class AreaTest {
 	 */
 	@Test
 	public void outsideLimitTest() {
-		assertThat(area.availablePositions(new MatrixPosition(0, 0)).size(), is(0));
-		assertThat(area.availablePositions(new MatrixPosition(7, 0)).size(), is(0));
-		assertThat(area.availablePositions(new MatrixPosition(7, 21)).size(), is(0));
-		assertThat(area.availablePositions(new MatrixPosition(0, 21)).size(), is(0));
+		assertThat(area.availableDirections(new MatrixPosition(0, 0)).size(), is(0));
+		assertThat(area.availableDirections(new MatrixPosition(7, 0)).size(), is(0));
+		assertThat(area.availableDirections(new MatrixPosition(7, 21)).size(), is(0));
+		assertThat(area.availableDirections(new MatrixPosition(0, 21)).size(), is(0));
 	}
 
 	@Test
 	public void randomSituationTest() {
-		assertThat(area.availablePositions(new MatrixPosition(4, 13)).size(), is(0));
-		assertThat(area.availablePositions(new MatrixPosition(3, 8)).size(), is(4));
-		assertThat(area.availablePositions(new MatrixPosition(4, 5)).size(), is(1));
+		assertThat(area.availableDirections(new MatrixPosition(4, 13)).size(), is(0));
+		assertThat(area.availableDirections(new MatrixPosition(3, 8)).size(), is(4));
+		assertThat(area.availableDirections(new MatrixPosition(4, 5)).size(), is(1));
+	}
+
+	@Test
+	public void enclavedPositionGivesDownDirection() {
+		assertThat(area.availableDirections(new MatrixPosition(4, 5)).iterator().next(), is(Direction.DOWN));
 	}
 
 	@Test

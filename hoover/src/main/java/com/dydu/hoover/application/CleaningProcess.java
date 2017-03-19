@@ -28,7 +28,7 @@ public class CleaningProcess {
 		}
 
 		hoover.setStrategy(new LinearScan());
-		hoover.scanArea();
+		hoover.scanArea(area);
 
 	}
 

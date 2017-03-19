@@ -11,12 +11,12 @@ public class Area {
 		this.matrix = matrix;
 	}
 
-	public Collection<MatrixPosition> availablePositions(MatrixPosition position) {
-		Collection<MatrixPosition> availablePositions = new ArrayList<MatrixPosition>();
+	public Collection<Direction> availableDirections(MatrixPosition position) {
+		Collection<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
 			MatrixPosition directionCoordonates = direction.from(position);
 			if (isFree(directionCoordonates))
-				availablePositions.add(directionCoordonates);
+				availablePositions.add(direction);
 		}
 		return availablePositions;
 	}
