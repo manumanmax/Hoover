@@ -149,10 +149,11 @@ public class Area {
 		}
 
 		for (MatrixPosition p : positions) {
-
+			hooverPosition = p;
+			foundPlaces += positionToClean();
 		}
 
-		return foundPlaces;
+		return directions.size() + foundPlaces;
 	}
 
 }
