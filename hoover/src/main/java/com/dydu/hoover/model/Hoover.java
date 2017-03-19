@@ -1,17 +1,20 @@
 package com.dydu.hoover.model;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.List;
 
 import com.dydu.hoover.utils.AbstractCleaningStrategy;
 
 public class Hoover {
-	private MatrixPosition position;
 	private AbstractCleaningStrategy strategy;
 	private int numberOfPlacesToClean;
-	private MatrixPosition lastPlaceWithAvailablePosition;
+	private List<Direction> route = new ArrayList<Direction>();
+	private Deque<Direction> unlockPath = new ArrayDeque<Direction>();
 
-	public Hoover(MatrixPosition matrixPosition, int numberOfPlacesToClean) {
-		this.position = matrixPosition;
+	public Hoover(int numberOfPlacesToClean) {
 		this.numberOfPlacesToClean = numberOfPlacesToClean;
 	}
 
@@ -20,30 +23,15 @@ public class Hoover {
 	}
 
 	public void scanArea(Area area) {
-		/*
-		 * while (isTherePlacesToClean()) { Collection<Direction>
-		 * availableDirections = area.availableDirections(position); if
-		 * (!availableDirections.isEmpty()) {
-		 * move(strategy.getNextDirection(availableDirections)); } else { if
-		 * (lastPlaceWithAvailablePosition != null) {
-		 * goBackTo(lastPlaceWithAvailablePosition); } }
-		 * strategy.getNextDirection(availableDirections); }
-		 */
-		area.print("Before move");
-		if (isTherePlacesToClean()) {
-			Collection<Direction> availableDirections = area.availableDirections(position);
-			position = strategy.getNextDirection(availableDirections).from(position);
+		for (int i = 0; i < 6; i++) {
+			area.print("Before move", route);
+
+			if (isTherePlacesToClean()) {
+				Collection<Direction> availableDirections = area.availableDirections();
+				area.roll(strategy.getNextDirection(availableDirections), route);
+			}
+			area.print("After move", route);
 		}
-		area.print("After move");
-	}
-
-	private void move(Direction direction) {
-		position = direction.from(position);
-	}
-
-	private void goBackTo(MatrixPosition lastPlaceWithAvailablePosition2) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private boolean isTherePlacesToClean() {

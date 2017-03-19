@@ -1,5 +1,8 @@
 package com.dydu.hoover.application;
 
+import java.util.Arrays;
+
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +18,12 @@ public class CleaningProcess {
 	private static Hoover hoover;
 
 	public static void main(String[] args) {
+		System.out.println(Arrays.toString(args));
+		BasicConfigurator.configure();
 		try {
-			area = new Area(new MatrixFileReader().readFile(args[1]));
-			hoover = new Hoover(new MatrixPosition(Integer.parseInt(args[2]), Integer.parseInt(args[3])),
-					area.freePositions());
+			area = new Area(new MatrixFileReader().readFile(args[0]),
+					new MatrixPosition(Integer.parseInt(args[1]), Integer.parseInt(args[2])));
+			hoover = new Hoover(area.freePositions());
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.error("Verify that you set the path of the matrix" + ", first, and the position of the hoover in "
 					+ "argument to start cleaning.", e);

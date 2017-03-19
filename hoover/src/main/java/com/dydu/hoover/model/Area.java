@@ -3,18 +3,31 @@ package com.dydu.hoover.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class Area {
 	private String[][] matrix;
+	private MatrixPosition hooverPosition;
+	private MatrixPosition startPosition;
 
-	public Area(String[][] matrix) {
+	public Area(String[][] matrix, MatrixPosition hooverPosition) {
 		this.matrix = matrix;
+		this.hooverPosition = hooverPosition;
+		this.startPosition = hooverPosition;
+		setValueAt(startPosition, "c");
 	}
 
-	public Collection<Direction> availableDirections(MatrixPosition position) {
+	public Area(String[][] matrix, MatrixPosition hooverPosition, MatrixPosition startPosition) {
+		this.matrix = matrix;
+		this.hooverPosition = hooverPosition;
+		this.startPosition = hooverPosition;
+		setValueAt(startPosition, "c");
+	}
+
+	public Collection<Direction> availableDirections() {
 		Collection<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
-			MatrixPosition directionCoordonates = direction.from(position);
+			MatrixPosition directionCoordonates = direction.from(hooverPosition);
 			if (isFree(directionCoordonates))
 				availablePositions.add(direction);
 		}
@@ -55,11 +68,26 @@ public class Area {
 		return freePos;
 	}
 
-	public void print(String sentence) {
+	public void roll(Direction nextDirection, List<Direction> route) {
+		hooverPosition = nextDirection.from(hooverPosition);
+		setValueAt(hooverPosition, "c");
 
+	}
+
+	public void print(String sentence, List<Direction> route) {
+		List<String[]> tmpMatrix = new ArrayList<String[]>();
 		for (String[] line : matrix) {
-			System.err.println(Arrays.toString(line) + "\n");
+			int pos = line.length - 1;
+			if (line[pos].equals("\r")) {
+				tmpMatrix.add(Arrays.copyOf(line, line.length - 1));
+			}
 		}
+
+		System.out.println(sentence);
+		for (String[] line : tmpMatrix) {
+			System.err.print(Arrays.toString(line) + "\n");
+		}
+		System.out.flush();
 	}
 
 }
