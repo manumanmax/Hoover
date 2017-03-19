@@ -84,18 +84,6 @@ public class Area {
 		numberOfCleanedPlaces++;
 	}
 
-	public int freePositions() {
-		int freePos = 0;
-		for (String[] line : matrix) {
-			for (String cell : line) {
-				if (cell.equals(" ")) {
-					freePos++;
-				}
-			}
-		}
-		return freePos;
-	}
-
 	public void roll(Direction nextDirection, List<Direction> route) {
 		hooverPosition = nextDirection.from(hooverPosition);
 		setValueAt(hooverPosition, "c");

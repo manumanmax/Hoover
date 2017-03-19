@@ -26,7 +26,7 @@ public class CleaningProcess {
 			area = new Area(new MatrixFileReader().readFile(args[0]),
 					new MatrixPosition(Integer.parseInt(args[1]), Integer.parseInt(args[2])),
 					getNumberOfConnexePlacesToClean(tmpArea));
-			hoover = new Hoover(area.freePositions());
+			hoover = new Hoover();
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.error("Verify that you set the path of the matrix" + ", first, and the position of the hoover in "
 					+ "argument to start cleaning.", e);
@@ -40,7 +40,6 @@ public class CleaningProcess {
 	}
 
 	private static int getNumberOfConnexePlacesToClean(Area area) {
-
 		return area.positionToClean();
 
 	}

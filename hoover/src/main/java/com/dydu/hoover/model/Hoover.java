@@ -10,14 +10,9 @@ import com.dydu.hoover.utils.AbstractCleaningStrategy;
 
 public class Hoover {
 	private AbstractCleaningStrategy strategy;
-	private int numberOfPlacesToClean;
 	private List<Direction> route = new ArrayList<Direction>();
 	private Deque<Direction> unlockPath = new ArrayDeque<Direction>();
 	private boolean positionLeftOnCriticalDirection = false;
-
-	public Hoover(int numberOfPlacesToClean) {
-		this.numberOfPlacesToClean = numberOfPlacesToClean;
-	}
 
 	public void setStrategy(AbstractCleaningStrategy strategy) {
 		this.strategy = strategy;
