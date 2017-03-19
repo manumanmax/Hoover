@@ -9,7 +9,23 @@ public class Area {
 	private String[][] matrix;
 	private MatrixPosition hooverPosition;
 	private MatrixPosition startPosition;
+	private int numberOfCleanedPlaces = 0;
+	private int connexeNumberOfPlacesToClean;
 
+	public Area(String[][] matrix, MatrixPosition hooverPosition, int positionsToClean) {
+		this.matrix = matrix;
+		this.hooverPosition = hooverPosition;
+		this.startPosition = hooverPosition;
+		connexeNumberOfPlacesToClean = positionsToClean;
+		setValueAt(startPosition, "c");
+	}
+
+	/**
+	 * this constructor is use for copy when counting the positions to clean.
+	 * 
+	 * @param matrix
+	 * @param hooverPosition
+	 */
 	public Area(String[][] matrix, MatrixPosition hooverPosition) {
 		this.matrix = matrix;
 		this.hooverPosition = hooverPosition;
@@ -28,8 +44,9 @@ public class Area {
 		Collection<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
 			MatrixPosition directionCoordonates = direction.from(hooverPosition);
-			if (isFree(directionCoordonates))
+			if (isFree(directionCoordonates)) {
 				availablePositions.add(direction);
+			}
 		}
 		return availablePositions;
 	}
@@ -37,7 +54,7 @@ public class Area {
 	private boolean isFree(MatrixPosition position) {
 
 		if (isInsideMatrix(position)) {
-			if (matrix[position.getLine()][position.getColumn()].equals(" ")) {
+			if (matrix[position.line][position.column].equals(" ")) {
 				return true;
 			}
 		}
@@ -45,15 +62,22 @@ public class Area {
 	}
 
 	private boolean isInsideMatrix(MatrixPosition position) {
-		if (position.getLine() > 0 && position.getColumn() > 0 && position.getLine() < matrix.length
-				&& position.getColumn() < matrix[0].length) {
+		if (position == null) {
+			return false;
+		}
+		if (position.line >= 0 && position.column >= 0 && position.line < matrix.length - 1
+				&& position.column < matrix[0].length - 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public void setValueAt(MatrixPosition position, String value) {
-		matrix[position.getLine()][position.getColumn()] = value;
+		if (matrix[position.line][position.column].equals(value)) {
+			return;
+		}
+		matrix[position.line][position.column] = value;
+		numberOfCleanedPlaces++;
 	}
 
 	public int freePositions() {
@@ -83,11 +107,29 @@ public class Area {
 			}
 		}
 
-		System.out.println(sentence);
+		// System.out.append(sentence);
 		for (String[] line : tmpMatrix) {
-			System.err.print(Arrays.toString(line) + "\n");
+			System.err.append(Arrays.toString(line) + "\n");
 		}
 		System.out.flush();
+
+		System.err.flush();
+	}
+
+	public boolean wall(Direction direction) {
+		MatrixPosition position = direction.from(hooverPosition);
+		if (matrix[position.line][position.column].equals("M")) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean doNeedToBeClean() {
+		if (numberOfCleanedPlaces < connexeNumberOfPlacesToClean) {
+			return true;
+		}
+		return false;
+
 	}
 
 }

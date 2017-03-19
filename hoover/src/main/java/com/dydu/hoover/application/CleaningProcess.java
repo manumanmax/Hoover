@@ -21,8 +21,11 @@ public class CleaningProcess {
 		System.out.println(Arrays.toString(args));
 		BasicConfigurator.configure();
 		try {
-			area = new Area(new MatrixFileReader().readFile(args[0]),
+			Area tmpArea = new Area(new MatrixFileReader().readFile(args[0]),
 					new MatrixPosition(Integer.parseInt(args[1]), Integer.parseInt(args[2])));
+			area = new Area(new MatrixFileReader().readFile(args[0]),
+					new MatrixPosition(Integer.parseInt(args[1]), Integer.parseInt(args[2])),
+					getNumberOfConnexePlacesToClean(area));
 			hoover = new Hoover(area.freePositions());
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.error("Verify that you set the path of the matrix" + ", first, and the position of the hoover in "
@@ -35,6 +38,11 @@ public class CleaningProcess {
 		hoover.setStrategy(new LinearScan());
 		hoover.scanArea(area);
 
+	}
+
+	private static MatrixPosition getNumberOfConnexePlacesToClean(Area area) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -13,6 +13,7 @@ public class Hoover {
 	private int numberOfPlacesToClean;
 	private List<Direction> route = new ArrayList<Direction>();
 	private Deque<Direction> unlockPath = new ArrayDeque<Direction>();
+	private boolean positionLeftOnCriticalDirection = false;
 
 	public Hoover(int numberOfPlacesToClean) {
 		this.numberOfPlacesToClean = numberOfPlacesToClean;
@@ -23,20 +24,33 @@ public class Hoover {
 	}
 
 	public void scanArea(Area area) {
-		for (int i = 0; i < 6; i++) {
+		while (area.doNeedToBeClean()) {
 			area.print("Before move", route);
-
-			if (isTherePlacesToClean()) {
-				Collection<Direction> availableDirections = area.availableDirections();
-				area.roll(strategy.getNextDirection(availableDirections), route);
+			Collection<Direction> availableDirections = area.availableDirections();
+			Direction nextDirection = strategy.getNextDirection(availableDirections);
+			if (nextDirection == Direction.UNDEFINED) {
+				stepBack(area, route);
+			} else {
+				area.roll(nextDirection, route);
+				unlockPath.push(nextDirection);
+				if (availableDirections.size() != 1 && availableDirections.contains(strategy.criticalDirection)) {
+					positionLeftOnCriticalDirection = true;
+				} else if (nextDirection == strategy.criticalDirection) {
+					positionLeftOnCriticalDirection = false;
+				}
+				if (positionLeftOnCriticalDirection && area.wall(strategy.criticalDirection)) {
+					stepBack(area, route);
+				}
 			}
-			area.print("After move", route);
 		}
+
 	}
 
-	private boolean isTherePlacesToClean() {
-		if (strategy.numberOfCleanedSquares() == numberOfPlacesToClean)
-			return false;
-		return true;
+	private void stepBack(Area area, List<Direction> route) {
+		if (unlockPath.isEmpty()) {
+			return;
+		}
+		area.roll(unlockPath.pop().reverse(), route);
 	}
+
 }

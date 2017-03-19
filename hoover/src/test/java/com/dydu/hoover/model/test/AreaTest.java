@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.junit.Before;
@@ -35,12 +36,13 @@ public class AreaTest {
 		if (matrix == null) {
 			throw new NoSuchFileException(file);
 		}
-		area = new Area(matrix, new MatrixPosition(3, 3));
+		area = new Area(matrix, new MatrixPosition(3, 3), 0);
 
 		areaClass = area.getClass();
 
 		try {
-			roll = areaClass.getDeclaredMethod("roll", Direction.class);
+			// Method[] methods = areaClass.getDeclaredMethods();
+			roll = areaClass.getMethod("roll", Direction.class, List.class);
 		} catch (NoSuchMethodException e) {
 			fail("NoSuchMethodException : roll in Area.");
 		} catch (SecurityException e) {
@@ -112,6 +114,6 @@ public class AreaTest {
 
 	@Test
 	public void numberOfFreeSpaceInRoomsTest() {
-		assertThat(area.freePositions(), is(65));
+		assertThat(area.freePositions(), is(64));
 	}
 }

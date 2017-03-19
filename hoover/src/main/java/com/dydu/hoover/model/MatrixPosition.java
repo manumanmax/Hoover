@@ -5,9 +5,16 @@ public class MatrixPosition {
 	public int line;
 	public int column;
 
+	/**
+	 * Be careful, this constructor is reserved for translation from user
+	 * coordonates to matrix coordonates
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public MatrixPosition(int x, int y) {
-		this.line = x;
-		this.column = y;
+		this.line = x - MATRIX_SHIFT;
+		this.column = y - MATRIX_SHIFT;
 	}
 
 	public MatrixPosition(MatrixPosition position) {
@@ -16,11 +23,11 @@ public class MatrixPosition {
 	}
 
 	public int getLine() {
-		return line - MATRIX_SHIFT;
+		return line + MATRIX_SHIFT;
 	}
 
 	public int getColumn() {
-		return column - MATRIX_SHIFT;
+		return column + MATRIX_SHIFT;
 	}
 
 	@Override

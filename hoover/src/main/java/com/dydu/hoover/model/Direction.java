@@ -1,20 +1,41 @@
 package com.dydu.hoover.model;
 
 public enum Direction {
-	UP, DOWN, LEFT, RIGHT;
+	UP, DOWN, LEFT, RIGHT, UNDEFINED;
 
 	public MatrixPosition from(MatrixPosition position) {
+
+		MatrixPosition futurPosition = new MatrixPosition(position);
 		switch (this) {
 		case UP:
-			return new MatrixPosition(position.line - 1, position.column);
+			futurPosition.line--;
+			return futurPosition;
 		case DOWN:
-			return new MatrixPosition(position.line + 1, position.column);
+			futurPosition.line++;
+			return futurPosition;
 		case RIGHT:
-			return new MatrixPosition(position.line, position.column + 1);
+			futurPosition.column++;
+			return futurPosition;
 		case LEFT:
-			return new MatrixPosition(position.line, position.column - 1);
+			futurPosition.column--;
+			return futurPosition;
 		default:
-			return position;
+			return null;
+		}
+	}
+
+	public Direction reverse() {
+		switch (this) {
+		case UP:
+			return Direction.DOWN;
+		case DOWN:
+			return Direction.UP;
+		case RIGHT:
+			return Direction.LEFT;
+		case LEFT:
+			return Direction.RIGHT;
+		default:
+			return Direction.UNDEFINED;
 		}
 	}
 
