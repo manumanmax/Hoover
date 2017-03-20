@@ -5,11 +5,9 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.junit.Before;
@@ -27,7 +25,6 @@ public class AreaTest {
 	// reflect
 	private Area area;
 	private Class<? extends Area> areaClass;
-	private Method roll;
 	private Field position;
 
 	@Before
@@ -41,19 +38,9 @@ public class AreaTest {
 		areaClass = area.getClass();
 
 		try {
-			// Method[] methods = areaClass.getDeclaredMethods();
-			roll = areaClass.getMethod("roll", Direction.class, List.class);
-		} catch (NoSuchMethodException e) {
-			fail("NoSuchMethodException : roll in Area.");
-		} catch (SecurityException e) {
-			fail("SecurityException : initializing roll reflector.");
-		}
-		roll.setAccessible(true);
-
-		try {
 			position = areaClass.getDeclaredField("hooverPosition");
 		} catch (NoSuchFieldException e) {
-			fail("NoSuchFieldException : position in Hoover.");
+			fail("NoSuchFieldException : hooverPosition in area.");
 		} catch (SecurityException e) {
 			fail("SecurityException : initializing position reflector.");
 		}
@@ -114,6 +101,12 @@ public class AreaTest {
 
 	@Test
 	public void numberOfFreeSpaceInRoomsTest() {
-		assertThat(area.freePositions(), is(64));
+		assertThat(area.positionToClean(), is(63));
 	}
+
+	@Test
+	public void rollTest() {
+		fail("not yet implemented");
+	}
+
 }

@@ -40,7 +40,7 @@ public class CleaningProcess {
 	}
 
 	private static int getNumberOfConnexePlacesToClean(Area area) {
-		return area.positionToClean();
+		return area.positionToClean() + 1;
 
 	}
 

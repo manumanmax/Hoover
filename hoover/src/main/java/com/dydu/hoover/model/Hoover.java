@@ -11,7 +11,7 @@ import com.dydu.hoover.utils.AbstractCleaningStrategy;
 public class Hoover {
 	private AbstractCleaningStrategy strategy;
 	private List<Direction> route = new ArrayList<Direction>();
-	private Deque<Direction> unlockPath = new ArrayDeque<Direction>();
+	private Deque<Deque<Direction>> unlockPaths = new ArrayDeque<Deque<Direction>>();
 	private boolean positionLeftOnCriticalDirection = false;
 
 	public void setStrategy(AbstractCleaningStrategy strategy) {
@@ -19,16 +19,17 @@ public class Hoover {
 	}
 
 	public void scanArea(Area area) {
-		while (area.doNeedToBeClean()) {
-			area.print("Before move");
+		int i = 0;
+		while (area.doNeedToBeClean() && i++ < 40) {
 			Collection<Direction> availableDirections = area.availableDirections();
 			Direction nextDirection = strategy.getNextDirection(availableDirections);
 			if (nextDirection == Direction.UNDEFINED) {
-				stepBack(area, route);
+				if (!stepBack(area, route)) {
+					break;
+				}
 			} else {
 				area.roll(nextDirection, route);
-				unlockPath.push(nextDirection);
-				if (availableDirections.size() != 1 && availableDirections.contains(strategy.criticalDirection)) {
+				if (availableDirections.size() > 1 && availableDirections.contains(strategy.criticalDirection)) {
 					positionLeftOnCriticalDirection = true;
 				} else if (nextDirection == strategy.criticalDirection) {
 					positionLeftOnCriticalDirection = false;
@@ -37,15 +38,20 @@ public class Hoover {
 					stepBack(area, route);
 				}
 			}
+			area.print("Before move");
 		}
 
 	}
 
-	private void stepBack(Area area, List<Direction> route) {
-		if (unlockPath.isEmpty()) {
-			return;
+	private boolean stepBack(Area area, List<Direction> route) {
+		if (unlockPaths.isEmpty()) {
+			return false;
 		}
-		area.roll(unlockPath.pop().reverse(), route);
+		Deque<Direction> backPath = unlockPaths.pop();
+		while (!backPath.isEmpty()) {
+			area.roll(backPath.pop().reverse(), route);
+		}
+		return true;
 	}
 
 }

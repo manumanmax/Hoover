@@ -42,8 +42,10 @@ public class Area {
 	}
 
 	public Collection<Direction> availableDirections() {
-		if (matrix[hooverPosition.line][hooverPosition.column].equals("M")) {
-			return Collections.emptyList();
+		if (isInsideMatrix(hooverPosition)) {
+			if (matrix[hooverPosition.line][hooverPosition.column].equals("M")) {
+				return Collections.emptyList();
+			}
 		}
 		Collection<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
@@ -86,7 +88,9 @@ public class Area {
 
 	public void roll(Direction nextDirection, List<Direction> route) {
 		hooverPosition = nextDirection.from(hooverPosition);
-		setValueAt(hooverPosition, "c");
+		// TODO : Remove this after
+		setValueAt(hooverPosition, matrix[hooverPosition.line][hooverPosition.column] + " c");
+		route.add(nextDirection);
 
 	}
 
@@ -103,8 +107,7 @@ public class Area {
 		for (String[] line : tmpMatrix) {
 			System.err.append(Arrays.toString(line) + "\n");
 		}
-		System.out.flush();
-
+		System.err.println();
 		System.err.flush();
 	}
 
