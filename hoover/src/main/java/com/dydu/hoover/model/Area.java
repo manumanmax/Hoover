@@ -41,13 +41,13 @@ public class Area {
 		setValueAt(startPosition, "c");
 	}
 
-	public Collection<Direction> availableDirections() {
+	public List<Direction> availableDirections() {
 		if (isInsideMatrix(hooverPosition)) {
 			if (matrix[hooverPosition.line][hooverPosition.column].equals("M")) {
 				return Collections.emptyList();
 			}
 		}
-		Collection<Direction> availablePositions = new ArrayList<Direction>();
+		List<Direction> availablePositions = new ArrayList<Direction>();
 		for (Direction direction : Direction.values()) {
 			MatrixPosition directionCoordonates = direction.from(hooverPosition);
 			if (isFree(directionCoordonates)) {
@@ -88,8 +88,8 @@ public class Area {
 
 	public void roll(Direction nextDirection, List<Direction> route) {
 		hooverPosition = nextDirection.from(hooverPosition);
-		// TODO : Remove this after
-		setValueAt(hooverPosition, matrix[hooverPosition.line][hooverPosition.column] + " c");
+		setValueAt(hooverPosition, "c");
+
 		route.add(nextDirection);
 
 	}
@@ -119,7 +119,7 @@ public class Area {
 		return false;
 	}
 
-	public boolean doNeedToBeClean() {
+	public boolean doNeedToBeCleaned() {
 		if (numberOfCleanedPlaces < connexeNumberOfPlacesToClean) {
 			return true;
 		}
@@ -145,6 +145,16 @@ public class Area {
 		}
 
 		return directions.size() + foundPlaces;
+	}
+
+	public void printRoute(List<Direction> route) {
+		MatrixPosition position = new MatrixPosition(startPosition);
+		System.out.println(position);
+		for (Direction direction : route) {
+			MatrixPosition nextPosition = direction.from(position);
+			System.out.println(nextPosition);
+			position = nextPosition;
+		}
 	}
 
 }

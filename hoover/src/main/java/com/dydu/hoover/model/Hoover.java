@@ -12,46 +12,59 @@ public class Hoover {
 	private AbstractCleaningStrategy strategy;
 	private List<Direction> route = new ArrayList<Direction>();
 	private Deque<Deque<Direction>> unlockPaths = new ArrayDeque<Deque<Direction>>();
-	private boolean positionLeftOnCriticalDirection = false;
+	Deque<Direction> currentBackPath = new ArrayDeque<Direction>();
 
 	public void setStrategy(AbstractCleaningStrategy strategy) {
 		this.strategy = strategy;
 	}
 
 	public void scanArea(Area area) {
-		int i = 0;
-		while (area.doNeedToBeClean() && i++ < 40) {
+		area.print("");
+		while (area.doNeedToBeCleaned()) {
 			Collection<Direction> availableDirections = area.availableDirections();
+			if (availableDirections.size() == 1) {
+				area.roll(availableDirections.iterator().next(), route);
+				currentBackPath.push(availableDirections.iterator().next().reverse());
+				continue;
+			}
 			Direction nextDirection = strategy.getNextDirection(availableDirections);
 			if (nextDirection == Direction.UNDEFINED) {
-				if (!stepBack(area, route)) {
+				boolean canGoBack = stepBack(area, route);
+				if (!canGoBack) {
+					System.out.println("can't go back...");
 					break;
 				}
 			} else {
+				unlockPaths.push(new ArrayDeque<Direction>(currentBackPath));
+				currentBackPath.clear();
+				currentBackPath.push(nextDirection.reverse());
 				area.roll(nextDirection, route);
-				if (availableDirections.size() > 1 && availableDirections.contains(strategy.criticalDirection)) {
-					positionLeftOnCriticalDirection = true;
-				} else if (nextDirection == strategy.criticalDirection) {
-					positionLeftOnCriticalDirection = false;
-				}
-				if (positionLeftOnCriticalDirection && area.wall(strategy.criticalDirection)) {
-					stepBack(area, route);
-				}
 			}
-			area.print("Before move");
 		}
-
+		area.print("");
 	}
 
 	private boolean stepBack(Area area, List<Direction> route) {
-		if (unlockPaths.isEmpty()) {
-			return false;
-		}
-		Deque<Direction> backPath = unlockPaths.pop();
+		if (currentBackPath.isEmpty())
+			if (unlockPaths.isEmpty()) {
+				return false;
+			}
+		Deque<Direction> backPath = new ArrayDeque<Direction>(currentBackPath);
 		while (!backPath.isEmpty()) {
-			area.roll(backPath.pop().reverse(), route);
+			Direction d = backPath.pop();
+			area.roll(d, route);
+		}
+		if (unlockPaths.isEmpty()) {
+			currentBackPath = new ArrayDeque<Direction>();
+		} else {
+			currentBackPath = new ArrayDeque<Direction>(unlockPaths.pop());
 		}
 		return true;
+	}
+
+	public void printRoute(Area area) {
+		area.printRoute(route);
+
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.dydu.hoover.utils;
 
+import java.io.IOException;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +29,10 @@ public final class MatrixFileReader {
 				matrix = fillMatrix(lines, maxLength);
 			}
 
-		} catch (Exception e) {
+		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
+		} catch (NullPointerException e) {
+			throw e;
 		}
 
 		return matrix;
