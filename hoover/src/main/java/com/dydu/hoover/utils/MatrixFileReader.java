@@ -1,7 +1,5 @@
 package com.dydu.hoover.utils;
 
-import java.io.IOException;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,19 +18,17 @@ public final class MatrixFileReader {
 	public String[][] readFile(String fileName) {
 		String[][] matrix = null;
 
+		String txt;
 		try {
-			String txt = IOUtils.toString(MatrixFileReader.class.getResourceAsStream(fileName));
+			txt = IOUtils.toString(MatrixFileReader.class.getResourceAsStream(fileName));
 			if (txt != null) {
 				String[] lines = txt.split("\n");
 				int maxLength = getMaxLength(lines);
 
 				matrix = fillMatrix(lines, maxLength);
 			}
-
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
-		} catch (NullPointerException e) {
-			throw e;
 		}
 
 		return matrix;

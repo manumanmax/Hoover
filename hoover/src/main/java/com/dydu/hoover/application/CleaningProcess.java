@@ -1,6 +1,5 @@
 package com.dydu.hoover.application;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +22,18 @@ public class CleaningProcess {
 		if (args.length != 1) {
 			LOG.info("One and one only argument is required.");
 		}
-		if (!new File(args[0]).isFile()) {
-			LOG.error(args[0] + " is not a correct file location.");
+
+		String[][] matrix;
+
+		matrix = new MatrixFileReader().readFile(args[0]);
+		if (matrix == null) {
+			LOG.info("Verify the file given in parameter.");
+			return;
 		}
-		String[][] matrix = new MatrixFileReader().readFile(args[0]);
 		MatrixPosition startPosition = getRandomPosition(matrix);
 		if (startPosition == null) {
 			LOG.error("No position is available to start cleaning.");
+			return;
 		}
 		init(matrix, startPosition);
 
